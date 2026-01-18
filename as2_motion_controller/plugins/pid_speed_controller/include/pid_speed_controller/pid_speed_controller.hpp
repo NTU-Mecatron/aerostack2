@@ -133,7 +133,7 @@ private:
 
   std::shared_ptr<as2::tf::TfHandler> tf_handler_;
 
-  std::vector<std::string> plugin_parameters_list_ = {"proportional_limitation", "use_bypass"};
+  std::vector<std::string> plugin_parameters_list_ = {"proportional_limitation", "use_bypass", "enu_frame_id", "flu_frame_id"};
 
   const std::vector<std::string> position_control_parameters_list_ = {
     "position_control.reset_integral", "position_control.antiwindup_cte",

@@ -47,10 +47,11 @@ void Plugin::ownInitialize()
   enu_frame_id_ = as2::tf::generateTfName(node_ptr_, enu_frame_id_);
   flu_frame_id_ = as2::tf::generateTfName(node_ptr_, flu_frame_id_);
 
-  input_pose_frame_id_ = as2::tf::generateTfName(node_ptr_, input_pose_frame_id_);
-  input_twist_frame_id_ = as2::tf::generateTfName(node_ptr_, input_twist_frame_id_);
+  // Default ENU frame
+  input_pose_frame_id_ = enu_frame_id_;
+  input_twist_frame_id_ = enu_frame_id_;
 
-  output_twist_frame_id_ = as2::tf::generateTfName(node_ptr_, output_twist_frame_id_);
+  output_twist_frame_id_ = enu_frame_id_;
 
   reset();
   return;
@@ -86,6 +87,16 @@ bool Plugin::updateParams(const std::vector<rclcpp::Parameter> & parameters)
       }
     } else if (param.get_name() == "use_bypass") {
       use_bypass_ = param.get_value<bool>();
+      if (!flags_.plugin_parameters_read) {
+        checkParamList(param_name, plugin_parameters_to_read_, flags_.plugin_parameters_read);
+      }
+    } else if (param.get_name() == "enu_frame_id") {
+      enu_frame_id_ = param.get_value<std::string>();
+      if (!flags_.plugin_parameters_read) {
+        checkParamList(param_name, plugin_parameters_to_read_, flags_.plugin_parameters_read);
+      }
+    } else if (param.get_name() == "flu_frame_id") {
+      flu_frame_id_ = param.get_value<std::string>();
       if (!flags_.plugin_parameters_read) {
         checkParamList(param_name, plugin_parameters_to_read_, flags_.plugin_parameters_read);
       }

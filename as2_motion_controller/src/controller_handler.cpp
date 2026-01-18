@@ -76,10 +76,12 @@ ControllerHandler::ControllerHandler(
   // Frame ids
   enu_frame_id_ = as2::tf::generateTfName(node_ptr_, enu_frame_id_);
   flu_frame_id_ = as2::tf::generateTfName(node_ptr_, flu_frame_id_);
-  input_pose_frame_id_ = as2::tf::generateTfName(node_ptr_, input_pose_frame_id_);
-  input_twist_frame_id_ = as2::tf::generateTfName(node_ptr_, input_twist_frame_id_);
-  output_pose_frame_id_ = as2::tf::generateTfName(node_ptr_, output_pose_frame_id_);
-  output_twist_frame_id_ = as2::tf::generateTfName(node_ptr_, output_twist_frame_id_);
+
+  // Default ENU frame
+  input_pose_frame_id_ = enu_frame_id_;
+  input_twist_frame_id_ = enu_frame_id_;
+  output_pose_frame_id_ = enu_frame_id_;
+  output_twist_frame_id_ = enu_frame_id_;
 
   // Subscribers
   ref_pose_sub_ = node_ptr_->create_subscription<geometry_msgs::msg::PoseStamped>(
@@ -407,10 +409,8 @@ void ControllerHandler::setControlModeSrvCall(
     input_pose_frame_id_ = output_pose_frame_id_;
     input_twist_frame_id_ = output_twist_frame_id_;
   } else {
-    input_pose_frame_id_ =
-      as2::tf::generateTfName(node_ptr_, controller_ptr_->getDesiredPoseFrameId());
-    input_twist_frame_id_ =
-      as2::tf::generateTfName(node_ptr_, controller_ptr_->getDesiredTwistFrameId());
+    input_pose_frame_id_ = controller_ptr_->getDesiredPoseFrameId();
+    input_twist_frame_id_ = controller_ptr_->getDesiredTwistFrameId();
   }
 
   RCLCPP_INFO(

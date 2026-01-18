@@ -1,6 +1,9 @@
 /**:
   ros__parameters:
     proportional_limitation: true
+    # Use absolute path to prevent generating prefix namespace
+    enu_frame_id: "/odom"
+    flu_frame_id: "/base_link"
     position_control:
       reset_integral: false
       antiwindup_cte: 0.0

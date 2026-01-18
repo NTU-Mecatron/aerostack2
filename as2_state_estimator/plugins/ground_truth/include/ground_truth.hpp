@@ -44,6 +44,7 @@
 #include <utility>
 #include <regex>
 #include <memory>
+#include <string>
 #include <geographic_msgs/msg/geo_point.hpp>
 
 #include <as2_core/names/services.hpp>
@@ -87,11 +88,22 @@ public:
     node_ptr_->get_parameter("use_gps", use_gps_);
     node_ptr_->get_parameter("set_origin_on_start", set_origin_on_start_);
 
+    std::string ground_truth_pose_topic = as2_names::topics::ground_truth::pose;
+    std::string ground_truth_twist_topic = as2_names::topics::ground_truth::twist;
+
+    if (node_ptr_->has_parameter("ground_truth_pose_topic")) {
+      node_ptr_->get_parameter("ground_truth_pose_topic", ground_truth_pose_topic);
+    }
+
+    if (node_ptr_->has_parameter("ground_truth_twist_topic")) {
+      node_ptr_->get_parameter("ground_truth_twist_topic", ground_truth_twist_topic);
+    }
+
     pose_sub_ = node_ptr_->create_subscription<geometry_msgs::msg::PoseStamped>(
-      as2_names::topics::ground_truth::pose, as2_names::topics::ground_truth::qos,
+      ground_truth_pose_topic, as2_names::topics::ground_truth::qos,
       std::bind(&Plugin::pose_callback, this, std::placeholders::_1));
     twist_sub_ = node_ptr_->create_subscription<geometry_msgs::msg::TwistStamped>(
-      as2_names::topics::ground_truth::twist, as2_names::topics::ground_truth::qos,
+      ground_truth_twist_topic, as2_names::topics::ground_truth::qos,
       std::bind(&Plugin::twist_callback, this, std::placeholders::_1));
 
     // publish static transform from earth to map and map to odom

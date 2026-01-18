@@ -7,3 +7,6 @@
     #   lon: 0.0  # Set manually origin latitude
     #   alt: 0.0  # Set manually origin altitude in meters
     use_gazebo_tf: false  # Use the gazebo tf tree
+    # Use to override ground_truth topics when using ground truth plugin
+    # ground_truth_pose_topic: "ground_truth/pose"
+    # ground_truth_twist_topic: "ground_truth/twist"

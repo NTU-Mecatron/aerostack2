@@ -124,6 +124,9 @@ def get_launch_description_from_plugin(
             arguments=['--ros-args', '--log-level',
                        LaunchConfiguration('log_level')],
             emulate_tty=True,
+            remappings=[
+                ('/tf', 'tf'),
+            ],
             parameters=[
                 {
                     'use_sim_time': LaunchConfiguration('use_sim_time'),
